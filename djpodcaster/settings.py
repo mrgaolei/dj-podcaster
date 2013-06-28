@@ -1,3 +1,4 @@
+import os.path
 # Django settings for djpodcaster project.
 
 DEBUG = True
@@ -111,6 +112,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(os.path.dirname(__file__), '../templates').replace('\\','/')
 )
 
 INSTALLED_APPS = (
@@ -124,6 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'podcast',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -154,3 +157,6 @@ LOGGING = {
         },
     }
 }
+
+FEED_PATH = os.path.join(os.path.dirname(__file__), '../feeds/').replace('\\','/')
+FEED_URL = 'http://feed.tangsuanradio.com/'
