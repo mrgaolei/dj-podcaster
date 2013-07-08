@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+{% load dateformatr %}<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
 	xmlns:content="http://purl.org/rss/1.0/modules/content/"
 	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
@@ -15,7 +15,7 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 	<atom:link href="http://fmit.liheran.com/index.rss" rel="self" type="application/rss+xml" />
 	<link>http://weibo.com/fmitbroadcast</link>
 	<description>{{ feed.description }}</description>
-	<lastBuildDate>Sun, 2 Sep 2012 15:42:00 GMT +8</lastBuildDate>
+	<lastBuildDate>{% now "r" %}</lastBuildDate>
 
 	<language>zh-cn</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -42,20 +42,20 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 {% for podcast in podcasts %}
 	<item>
 		<title>{{ podcast.title }}</title>
-		<pubDate>Sun, 23 Jun 2013 11:10:00 GMT +8</pubDate>
-		<itunes:duration>1:20:37</itunes:duration>
+		<pubDate>{{ podcast.created|dateformatr }}</pubDate>
+		<itunes:duration>{{ podcast.duration }}</itunes:duration>
 		<guid isPermaLink="false">{{ podcast.pk }}</guid>
 		<description><![CDATA[]]></description>
 		<wfw:commentRss>http://fmit.liheran.com</wfw:commentRss>
 		<slash:comments>0</slash:comments>
-		<itunes:image href="http://fmit.liheran.com/FMiT.VOL72.png" />
-<enclosure url="{{ podcast.enclosure_url }}" length="{{ podcast.enclosure_len }}" type="audio/x-m4a" />
-		<itunes:subtitle>{{ podcast.subtitle }}</itunes:subtitle>
-		<itunes:summary>{{ podcast.summary }}</itunes:summary>
-		<itunes:author>{{ podcast.author }}</itunes:author>
-		<itunes:explicit>clean</itunes:explicit>
+		<itunes:image href="{{ podcast.its_image.url }}" />
+<enclosure url="{{ podcast.enclosure_url }}" length="{{ podcast.enclosure_len }}" type="{{ podcast.enclosure_type_str }}" />
+		<itunes:subtitle>{{ podcast.its_subtitle }}</itunes:subtitle>
+		<itunes:summary>{{ podcast.its_summary }}</itunes:summary>
+		<itunes:author>{{ podcast.its_author }}</itunes:author>
+		<itunes:explicit>{{ podcast.its_explicit_str }}</itunes:explicit>
 	</item>
 {% endfor %}
 	
-	</channel>
+</channel>
 </rss>

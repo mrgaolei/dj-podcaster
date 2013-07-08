@@ -5,6 +5,5 @@ from podcast.models import Feed, Podcast
 # Create your views here.
 def showfeed(request, filename):
 	feed = get_object_or_404(Feed, filename=filename)
-	podcasts = Podcast.objects.filter(tags__in=feed.tags.all())
-	print podcasts
+	podcasts = Podcast.objects.filter(feeds=feed)
 	return render_to_response("podcast/feed.html", {'feed':feed,'podcasts':podcasts})
