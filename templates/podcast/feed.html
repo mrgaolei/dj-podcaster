@@ -15,7 +15,7 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 	<atom:link href="{{ feed.feed_url }}" rel="self" type="application/rss+xml" />
 	<link>{{ feed.feed_url }}</link>
 	<description>{{ feed.description }}</description>
-	<lastBuildDate>{{ now|dateformatr }}</lastBuildDate>
+	<lastBuildDate>{{ now|dateformatr }}+0800</lastBuildDate>
 
 	<language>zh-cn</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
@@ -30,7 +30,7 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 		<itunes:name>{{ feed.its_owner_name }}</itunes:name>
 		<itunes:email>{{ feed.its_owner_email }}</itunes:email>
 	</itunes:owner>
-	<managingEditor></managingEditor>
+	<managingEditor>{{ feed.its_owner_email }} ({{ feed.its_owner_name }})</managingEditor>
 
 	<copyright>{{ feed.copyright }}</copyright>
 	<itunes:subtitle>{{ feed.its_subtitle }}</itunes:subtitle>
@@ -44,7 +44,7 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 		<title>{{ podcast.title }}</title>
 		<pubDate>{{ podcast.created|dateformatr }}</pubDate>
 		<itunes:duration>{{ podcast.duration|duration }}</itunes:duration>
-		<guid isPermaLink="false">{{ podcast.pk }}</guid>
+		<guid isPermaLink="false">{{ podcast.pk }}_{{ podcast.enclosure_url }}</guid>
 		<description><![CDATA[{{ podcast.description }}]]></description>
 		<wfw:commentRss>{{ feed.feed_url }}</wfw:commentRss>
 		<slash:comments>0</slash:comments>
