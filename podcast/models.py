@@ -2,20 +2,24 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_slug
 # Create your models here.
 
 class Feed(models.Model):
-	filename = models.CharField("文件名", max_length=50, unique=True, help_text="%s*.xml"%settings.FEED_URL)
+	filename = models.CharField("文件名", max_length=50, unique=True, help_text="%s*.xml"%settings.FEED_URL, validators=[validate_slug])
 	admins = models.ManyToManyField(User, verbose_name="可发布人", help_text="管理员拥有全部Feed发布权")
 	title = models.CharField(max_length=100)
 	description = models.CharField(max_length=255)
 	its_summary = models.CharField(max_length=255)
 	its_author = models.CharField(max_length=255)
 	its_image = models.ImageField("播客封面", upload_to="feed")
+	its_owner_name = models.CharField(max_length=255)
+	its_owner_email = models.EmailField()
 	its_subtitle = models.CharField(max_length=255)
 	its_keywords = models.CharField(max_length=255)
 	its_category = models.CharField(max_length=255)
+	its_subcategory = models.CharField(max_length=255, blank=True)
 	copyright = models.CharField(max_length=255)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
@@ -53,6 +57,7 @@ class Podcast(models.Model):
 	)
 
 	title = models.CharField("标题", max_length=255)
+	description = models.CharField(max_length=255)
 	duration = models.IntegerField("时长", help_text="单位：秒")
 	enclosure_url = models.URLField("节目URL")
 	enclosure_len = models.IntegerField("文件大小",help_text="单位：字节")

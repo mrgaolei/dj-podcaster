@@ -10,9 +10,10 @@ class FeedAdmin(admin.ModelAdmin):
 
 	def make_build(self, request, queryset):
 		from django.template.loader import render_to_string
+		from datetime import datetime
 		for feed in queryset:
 			podcasts = Podcast.objects.filter(feeds=feed)
-			rss = render_to_string("podcast/feed.html", {'feed':feed,'podcasts':podcasts})
+			rss = render_to_string("podcast/feed.html", {'feed':feed,'podcasts':podcasts,'now':datetime.now()})
 			f = open(feed.feed_path(), 'w')
 			f.write(rss.encode('utf-8'))
 			f.close()

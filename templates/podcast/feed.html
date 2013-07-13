@@ -12,41 +12,41 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 
 <channel>
 	<title>{{ feed.title }}</title>
-	<atom:link href="http://fmit.liheran.com/index.rss" rel="self" type="application/rss+xml" />
-	<link>http://weibo.com/fmitbroadcast</link>
+	<atom:link href="{{ feed.feed_url }}" rel="self" type="application/rss+xml" />
+	<link>{{ feed.feed_url }}</link>
 	<description>{{ feed.description }}</description>
-	<lastBuildDate>{% now "r" %}</lastBuildDate>
+	<lastBuildDate>{{ now|dateformatr }}</lastBuildDate>
 
 	<language>zh-cn</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>self</generator>
+	<generator>dj-podcaster</generator>
 	<itunes:summary>{{ feed.its_summary }}</itunes:summary>
 	<itunes:author>{{ feed.its_author }}</itunes:author>
 
 	<itunes:explicit>clean</itunes:explicit>
-	<itunes:image href="http://fmit.liheran.com/album.png" />
+	<itunes:image href="{{ feed.its_image.url }}" />
 	<itunes:owner>
-		<itunes:name>挂风</itunes:name>
-		<itunes:email>gaolei@liheran.com</itunes:email>
+		<itunes:name>{{ feed.its_owner_name }}</itunes:name>
+		<itunes:email>{{ feed.its_owner_email }}</itunes:email>
 	</itunes:owner>
 	<managingEditor></managingEditor>
 
-	<copyright>&#x2117; &amp; &#xA9; 2011 FMiT &amp; liheran.com</copyright>
+	<copyright>{{ feed.copyright }}</copyright>
 	<itunes:subtitle>{{ feed.its_subtitle }}</itunes:subtitle>
-	<itunes:keywords>IT, Apple, iPhone</itunes:keywords>
-	<itunes:category text="Technology">
-		<itunes:category text="Tech News" />
+	<itunes:keywords>{{ feed.its_keywords }}</itunes:keywords>
+	<itunes:category text="{{ feed.its_category }}">
+		{% if feed.its_subcategory %}<itunes:category text="{{ feed.its_subcategory }}" />{% endif %}
 	</itunes:category>
 	
 {% for podcast in podcasts %}
 	<item>
 		<title>{{ podcast.title }}</title>
 		<pubDate>{{ podcast.created|dateformatr }}</pubDate>
-		<itunes:duration>{{ podcast.duration }}</itunes:duration>
+		<itunes:duration>{{ podcast.duration|duration }}</itunes:duration>
 		<guid isPermaLink="false">{{ podcast.pk }}</guid>
-		<description><![CDATA[]]></description>
-		<wfw:commentRss>http://fmit.liheran.com</wfw:commentRss>
+		<description><![CDATA[{{ podcast.description }}]]></description>
+		<wfw:commentRss>{{ feed.feed_url }}</wfw:commentRss>
 		<slash:comments>0</slash:comments>
 		<itunes:image href="{{ podcast.its_image.url }}" />
 <enclosure url="{{ podcast.enclosure_url }}" length="{{ podcast.enclosure_len }}" type="{{ podcast.enclosure_type_str }}" />
