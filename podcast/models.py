@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_slug
+from datetime import datetime
 # Create your models here.
 
 class Feed(models.Model):
@@ -72,6 +73,7 @@ class Podcast(models.Model):
 	active = models.BooleanField("上线",default=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
+	pubdate = models.DateTimeField("发布时间",default=datetime.now())
 
 	def enclosure_type_str(self):
 		for r in self.PODCAST_ENCLOSURE_TYPE:
