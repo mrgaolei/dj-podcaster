@@ -44,7 +44,7 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 		<title>{{ podcast.title }}</title>
 		<pubDate>{{ podcast.created|dateformatr }}</pubDate>
 		<itunes:duration>{{ podcast.duration|duration }}</itunes:duration>
-		<guid isPermaLink="false">{{ podcast.pk }}_{{ podcast.enclosure_url }}</guid>
+		<guid isPermaLink="false">{{ podcast.enclosure_url }}</guid>
 		<description><![CDATA[{{ podcast.description }}]]></description>
 		<wfw:commentRss>{{ feed.feed_url }}</wfw:commentRss>
 		<slash:comments>0</slash:comments>
