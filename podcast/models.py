@@ -9,6 +9,7 @@ from datetime import datetime
 
 class Feed(models.Model):
 	filename = models.CharField("文件名", max_length=50, unique=True, help_text="%s*.xml"%settings.FEED_URL, validators=[validate_slug])
+	domain = models.URLField("自定义域名", help_text="自定义域名会覆盖系统默认域名", blank=True)
 	admins = models.ManyToManyField(User, verbose_name="可发布人", help_text="管理员拥有全部Feed发布权")
 	title = models.CharField(max_length=100)
 	description = models.CharField(max_length=255)
@@ -26,7 +27,10 @@ class Feed(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 
 	def feed_url(self):
-		return "%s%s.xml" % (settings.FEED_URL, self.filename)
+		if self.domain:
+			return "%s%s.xml" % (self.domain, self.filename)
+		else:
+			return "%s%s.xml" % (settings.FEED_URL, self.filename)
 
 	def feed_path(self):
 		return "%s%s.xml" % (settings.FEED_PATH, self.filename)
@@ -58,7 +62,7 @@ class Podcast(models.Model):
 	)
 
 	title = models.CharField("标题", max_length=255)
-	description = models.CharField(max_length=255)
+	description = models.CharField(max_length=255, blank=True)
 	duration = models.IntegerField("时长", help_text="单位：秒")
 	enclosure_url = models.URLField("节目URL")
 	enclosure_len = models.IntegerField("文件大小",help_text="单位：字节")
