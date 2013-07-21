@@ -20,6 +20,8 @@ class FeedAdmin(admin.ModelAdmin):
 	make_build.short_description="重新生成所选的 Feed"
 
 class PodcastAdmin(admin.ModelAdmin):
+	date_hierarchy = 'pubdate'
+	list_display = ('title', 'active', 'pubdate')
 	list_filter = ['active','feeds']
 	exclude = ['creator']
 
