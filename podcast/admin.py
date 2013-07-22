@@ -8,6 +8,13 @@ class FeedAdmin(admin.ModelAdmin):
 	#list_filter = ['online']
 	actions = ['make_build']
 
+	def queryset(self, request):
+		qs = super(FeedAdmin, self).queryset(request)
+		if request.user.is_superuser:
+			return qs
+		else:
+			return qs.filter(admins=request.user)
+
 	def make_build(self, request, queryset):
 		from django.template.loader import render_to_string
 		from datetime import datetime
