@@ -33,7 +33,7 @@ class PodcastAdmin(admin.ModelAdmin):
 	exclude = ['creator']
 
 	def queryset(self, request):
-		qs = super(FeedAdmin, self).queryset(request)
+		qs = super(PodcastAdmin, self).queryset(request)
 		if request.user.is_superuser:
 			return qs
 		else:
