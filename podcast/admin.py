@@ -32,6 +32,13 @@ class PodcastAdmin(admin.ModelAdmin):
 	list_filter = ['active','feeds']
 	exclude = ['creator']
 
+	def queryset(self, request):
+		qs = super(FeedAdmin, self).queryset(request)
+		if request.user.is_superuser:
+			return qs
+		else:
+			return qs.filter(feeds__admins=request.user)
+
 	def save_model(self, request, obj, form, change):
 		obj.creator = request.user
 		obj.save()
