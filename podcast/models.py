@@ -95,3 +95,4 @@ class Podcast(models.Model):
 	class Meta:
 		verbose_name = '节目'
 		verbose_name_plural = verbose_name
+		ordering = ['-pubdate']
