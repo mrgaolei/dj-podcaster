@@ -48,9 +48,9 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 		<description><![CDATA[{{ podcast.description }}]]></description>
 		<wfw:commentRss>{{ feed.feed_url }}</wfw:commentRss>
 		<slash:comments>0</slash:comments>
-		<itunes:image href="{% if podcast.its_image %}{{ podcast.its_image.url }}{% endif %}" />
+		{% if podcast.its_image %}<itunes:image href="{{ podcast.its_image.url }}" />{% endif %}
 <enclosure url="{{ podcast.enclosure_url }}" length="{{ podcast.enclosure_len }}" type="{{ podcast.enclosure_type_str }}" />
-		<itunes:subtitle>{{ podcast.its_subtitle }}</itunes:subtitle>
+		<itunes:subtitle>{{ podcast.its_subtitle|truncatechars:255 }}</itunes:subtitle>
 		<itunes:summary>{{ podcast.its_summary }}</itunes:summary>
 		<itunes:author>{{ podcast.its_author }}</itunes:author>
 		<itunes:explicit>{{ podcast.its_explicit_str }}</itunes:explicit>

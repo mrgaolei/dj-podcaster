@@ -22,7 +22,7 @@ class Command(BaseCommand):
             podcast.enclosure_len = 10240
             podcast.enclosure_type = Podcast.PODCAST_ENCLOSURE_TYPE_MP3
             podcast.its_image = ''
-            podcast.its_subtitle = post.post_content
+            podcast.its_subtitle = post.post_content[0:254]
             podcast.its_summary = post.post_content
             podcast.its_author = 'www.tangsuanradio.com'
             podcast.its_explicit = Podcast.PODCAST_EXPLICIT_YES
