@@ -96,3 +96,47 @@ class Podcast(models.Model):
 		verbose_name = '节目'
 		verbose_name_plural = verbose_name
 		ordering = ['-pubdate']
+
+class Terms(models.Model):
+	term_id = models.IntegerField(primary_key=True)
+	name = models.CharField(max_length=200)
+	slug = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.name
+
+	class Meta:
+		db_table = 'ts_terms'
+
+class PostsManager(models.Manager):
+	def get_query_set(self):
+		return super(PostsManager, self).get_query_set().filter(post_status='publish')
+
+class Posts(models.Model):
+	post_content = models.TextField()
+	post_title = models.TextField()
+	post_status = models.CharField(max_length=20)
+	post_date = models.DateTimeField()
+	
+	objects = PostsManager()
+
+	def __unicode__(self):
+		return self.post_title
+
+	def enclosure(self):
+		return self.postmeta_set.get(meta_key='enclosure')
+
+	class Meta:
+		db_table = 'ts_posts'
+
+class Postmeta(models.Model):
+	meta_id = models.IntegerField(primary_key=True)
+	post = models.ForeignKey(Posts)
+	meta_key = models.CharField(max_length=255)
+	meta_value = models.TextField()
+
+	def __unicode__(self):
+		return self.meta_value
+
+	class Meta:
+		db_table = 'ts_postmeta'

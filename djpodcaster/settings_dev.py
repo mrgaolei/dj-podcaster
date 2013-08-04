@@ -20,11 +20,11 @@ DATABASES = {
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     },
-    'tangsuanradio': {
+    'ts': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tangsuanradio',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'andrewlblb',
         'HOST': '',
         'PORT': '',
     }
@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'south',
     'podcast',
 )
 
@@ -165,6 +166,8 @@ LOGGING = {
         },
     }
 }
+
+#DATABASE_ROUTERS = ['podcast.TsRouter']
 
 FEED_PATH = os.path.join(os.path.dirname(__file__), '../feeds/').replace('\\','/')
 FEED_URL = 'http://feed.tangsuanradio.com/'
