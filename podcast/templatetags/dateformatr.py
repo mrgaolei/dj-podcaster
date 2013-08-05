@@ -13,4 +13,4 @@ def duration(value):
 	sec = value % 3600
 	m = sec / 60
 	s = sec % 60
-	return "%d:%d:%d" % (h,m,s)
+	return "%d:%02d:%02d" % (h,m,s)
