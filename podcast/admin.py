@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
+from django.forms.widgets import CheckboxSelectMultiple
 from models import *
 
 class FeedAdmin(admin.ModelAdmin):
@@ -31,6 +32,15 @@ class PodcastAdmin(admin.ModelAdmin):
 	list_display = ('title', 'active', 'pubdate')
 	list_filter = ['active','feeds']
 	exclude = ['creator']
+
+	def get_form(self, request, obj=None, **kwargs):
+		form = super(PodcastAdmin, self).get_form(request, obj, **kwargs)
+		form.base_fields["feeds"].widget = CheckboxSelectMultiple()
+		if not request.user.is_superuser:
+			form.base_fields["feeds"].queryset = Feed.objects.filter(admins=request.user)
+
+		print form.base_fields["feeds"]
+		return form
 
 	def queryset(self, request):
 		qs = super(PodcastAdmin, self).queryset(request)
