@@ -7,6 +7,10 @@ from django.core.validators import validate_slug
 from datetime import datetime
 # Create your models here.
 
+class Category(models.Model):
+	text = models.CharField("类目", max_length=255)
+	subText = models.CharField("子类目", max_length=255, blank=True)
+
 class Feed(models.Model):
 	filename = models.CharField("文件名", max_length=50, unique=True, help_text="%s*.xml"%settings.FEED_URL, validators=[validate_slug])
 	domain = models.URLField("自定义域名", help_text="自定义域名会覆盖系统默认域名", blank=True)
@@ -22,6 +26,7 @@ class Feed(models.Model):
 	its_keywords = models.CharField(max_length=255)
 	its_category = models.CharField(max_length=255)
 	its_subcategory = models.CharField(max_length=255, blank=True)
+	its_categories = models.TextField("播客分类xml",default='')
 	copyright = models.CharField(max_length=255)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)

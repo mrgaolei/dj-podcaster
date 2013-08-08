@@ -8,15 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Podcast.test'
-        db.add_column(u'podcast_podcast', 'test',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
+        # Adding field 'Feed.its_categories'
+        db.add_column(u'podcast_feed', 'its_categories',
+                      self.gf('django.db.models.fields.TextField')(default=''),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Podcast.test'
-        db.delete_column(u'podcast_podcast', 'test')
+        # Deleting field 'Feed.its_categories'
+        db.delete_column(u'podcast_feed', 'its_categories')
 
 
     models = {
@@ -56,15 +56,23 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'podcast.category': {
+            'Meta': {'object_name': 'Category'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'subText': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'text': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
         u'podcast.feed': {
             'Meta': {'object_name': 'Feed'},
             'admins': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'symmetrical': 'False'}),
             'copyright': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'domain': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
             'filename': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'its_author': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'its_categories': ('django.db.models.fields.TextField', [], {'default': "''"}),
             'its_category': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'its_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'its_keywords': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
@@ -77,11 +85,11 @@ class Migration(SchemaMigration):
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         u'podcast.podcast': {
-            'Meta': {'object_name': 'Podcast'},
+            'Meta': {'ordering': "['-pubdate']", 'object_name': 'Podcast'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'duration': ('django.db.models.fields.IntegerField', [], {}),
             'enclosure_len': ('django.db.models.fields.IntegerField', [], {}),
             'enclosure_type': ('django.db.models.fields.SmallIntegerField', [], {'default': '2'}),
@@ -93,10 +101,30 @@ class Migration(SchemaMigration):
             'its_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
             'its_subtitle': ('django.db.models.fields.TextField', [], {}),
             'its_summary': ('django.db.models.fields.TextField', [], {}),
-            'pubdate': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 7, 15, 0, 0)'}),
-            'test': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'pubdate': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 8, 8, 0, 0)'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+        },
+        u'podcast.postmeta': {
+            'Meta': {'object_name': 'Postmeta', 'db_table': "'ts_postmeta'"},
+            'meta_id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
+            'meta_key': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'meta_value': ('django.db.models.fields.TextField', [], {}),
+            'post': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['podcast.Posts']"})
+        },
+        u'podcast.posts': {
+            'Meta': {'object_name': 'Posts', 'db_table': "'ts_posts'"},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'post_content': ('django.db.models.fields.TextField', [], {}),
+            'post_date': ('django.db.models.fields.DateTimeField', [], {}),
+            'post_status': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'post_title': ('django.db.models.fields.TextField', [], {})
+        },
+        u'podcast.terms': {
+            'Meta': {'object_name': 'Terms', 'db_table': "'ts_terms'"},
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'term_id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'})
         }
     }
 
