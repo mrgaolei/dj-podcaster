@@ -38,7 +38,7 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 	<!--itunes:category text="{{ feed.its_category }}">
 		{% if feed.its_subcategory %}<itunes:category text="{{ feed.its_subcategory }}" />{% endif %}
 	</itunes:category-->
-	{{ feed.its_categories|safe }}
+	{{ feed.its_categories|safe|escape }}
 	
 {% for podcast in podcasts %}
 	<item>
