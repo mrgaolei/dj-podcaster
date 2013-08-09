@@ -35,9 +35,10 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 	<copyright>{{ feed.copyright }}</copyright>
 	<itunes:subtitle>{{ feed.its_subtitle }}</itunes:subtitle>
 	<itunes:keywords>{{ feed.its_keywords }}</itunes:keywords>
-	<itunes:category text="{{ feed.its_category }}">
+	<!--itunes:category text="{{ feed.its_category }}">
 		{% if feed.its_subcategory %}<itunes:category text="{{ feed.its_subcategory }}" />{% endif %}
-	</itunes:category>
+	</itunes:category-->
+	{{ feed.its_categories }}
 	
 {% for podcast in podcasts %}
 	<item>
