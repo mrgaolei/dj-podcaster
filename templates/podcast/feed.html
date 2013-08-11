@@ -43,7 +43,7 @@ xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 {% for podcast in podcasts %}
 	<item>
 		<title>{{ podcast.title }}</title>
-		<pubDate>{{ podcast.created|dateformatr }}</pubDate>
+		<pubDate>{{ podcast.pubdate|dateformatr }}</pubDate>
 		<itunes:duration>{{ podcast.duration|duration }}</itunes:duration>
 		<guid isPermaLink="false">{{ podcast.enclosure_url }}</guid>
 		<description><![CDATA[{{ podcast.description }}]]></description>
