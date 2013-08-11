@@ -32,6 +32,18 @@ class Command(BaseCommand):
             try:
                 podcast.save()
                 podcast.feeds.add(feed_ts)
+                # import all category
+                #print post
+                for rel in post.termrelationships_set.all():
+                    if rel.term_taxonomy.taxonomy == 'category':
+                        if rel.term_taxonomy.term_id == 1:
+                            continue
+                        try:
+                            feed_tmp = Feed.objects.get(pk=rel.term_taxonomy.term_id)
+                            podcast.feeds.add(feed_tmp)
+                        except Exception as e:
+                            print e
+                        #print rel.term_taxonomy.term_id, rel.term_taxonomy.term
             except Exception as e:
                 print e
             

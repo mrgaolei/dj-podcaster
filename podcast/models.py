@@ -145,3 +145,25 @@ class Postmeta(models.Model):
 
 	class Meta:
 		db_table = 'ts_postmeta'
+
+class TermTaxonomyManager(models.Manager):
+	def get_query_set(self):
+		return super(TermTaxonomyManager, self).get_query_set().filter(taxonomy='category')
+
+class TermTaxonomy(models.Model):
+	term_taxonomy_id = models.IntegerField(primary_key=True)
+	term = models.ForeignKey(Terms)
+	taxonomy = models.CharField(max_length=32)
+
+	objects = TermTaxonomyManager()
+
+	class Meta:
+		db_table = 'ts_term_taxonomy'
+
+class TermRelationships(models.Model):
+	post = models.ForeignKey(Posts, db_column='object_id', primary_key=True)
+	term_taxonomy = models.ForeignKey(TermTaxonomy)
+
+	class Meta:
+		db_table = 'ts_term_relationships'
+		unique_together = (("post", "term_taxonomy"),)
