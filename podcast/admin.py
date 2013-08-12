@@ -34,6 +34,15 @@ class PodcastAdmin(admin.ModelAdmin):
 	exclude = ['creator']
 
 	def get_form(self, request, obj=None, **kwargs):
+		canChange = True
+		if obj:
+			canChange = False
+			for feed in obj.feeds.all():
+				for admin in feed.admins.all():
+					if admin == request.user:
+						canChange = True
+		if not canChange:
+			raise Exception("Permission Denied!")
 		form = super(PodcastAdmin, self).get_form(request, obj, **kwargs)
 		form.base_fields["feeds"].widget = CheckboxSelectMultiple()
 		if not request.user.is_superuser:
@@ -47,6 +56,7 @@ class PodcastAdmin(admin.ModelAdmin):
 		if request.user.is_superuser:
 			return qs
 		else:
+			return qs
 			return qs.filter(feeds__admins=request.user)
 
 	def save_model(self, request, obj, form, change):
