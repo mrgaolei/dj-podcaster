@@ -1,0 +1,5 @@
+<uwsgi>
+	<socket>/tmp/djpodcaster.sock</socket>
+	<master/>
+	<module>djpodcaster.wsgi:application</module>
+</uwsgi>
