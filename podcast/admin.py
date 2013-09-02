@@ -31,7 +31,7 @@ class PodcastAdmin(admin.ModelAdmin):
 	date_hierarchy = 'pubdate'
 	list_display = ('title', 'active', 'pubdate')
 	list_filter = ['active','feeds']
-	exclude = ['creator']
+	exclude = ['creator','enclosure_url']
 
 	def get_form(self, request, obj=None, **kwargs):
 		canChange = True
@@ -60,6 +60,13 @@ class PodcastAdmin(admin.ModelAdmin):
 			return qs.filter(feeds__admins=request.user)
 
 	def save_model(self, request, obj, form, change):
+		import httplib2
+		h = httplib2.Http()
+		resp, content = h.request(obj.enclosure_url, "HEAD")
+		if resp['status'] == '200':
+			obj.enclosure_len = int(resp['content-length'])
+		else:
+			raise Exception("enclosure_url error")
 		obj.creator = request.user
 		obj.save()
 
