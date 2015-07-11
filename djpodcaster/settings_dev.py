@@ -15,18 +15,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'djpodcaster',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'USER': 'djpodcaster',
+        'PASSWORD': 'djpodcaster',
     },
     'ts': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tangsuanradio',
-        'USER': 'root',
-        'PASSWORD': 'andrewlblb',
-        'HOST': '',
-        'PORT': '',
+        'USER': '',
+        'PASSWORD': '',
     }
 }
 
@@ -42,7 +38,7 @@ TIME_ZONE = 'Asia/Shanghai'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-hans'
 
 SITE_ID = 1
 
@@ -120,7 +116,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), '../templates').replace('\\','/')
+    os.path.join(os.path.dirname(__file__), '../templates').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
@@ -134,7 +130,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'south',
     'podcast',
 )
 

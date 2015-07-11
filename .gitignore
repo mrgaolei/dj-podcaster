@@ -6,3 +6,4 @@ feeds
 media
 settings_prd.py
 settings.py
+venv/
