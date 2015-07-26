@@ -25,7 +25,7 @@ class FeedAdmin(admin.ModelAdmin):
 			f = open(feed.feed_path(), 'w')
 			f.write(rss.encode('utf-8'))
 			f.close()
-	make_build.short_description="重新生成所选的 Feed"
+	make_build.short_description=u"重新生成所选的 Feed"
 
 class PodcastAdmin(admin.ModelAdmin):
 	date_hierarchy = 'pubdate'
@@ -66,7 +66,7 @@ class PodcastAdmin(admin.ModelAdmin):
 		if resp['status'] == '200':
 			obj.enclosure_len = int(resp['content-length'])
 		else:
-			raise Exception("enclosure_url error")
+			raise Exception(u"节目URL错误，请上传完节目再发布。")
 		obj.creator = request.user
 		obj.save()
 
