@@ -29,9 +29,10 @@ class FeedAdmin(admin.ModelAdmin):
 
 class PodcastAdmin(admin.ModelAdmin):
 	date_hierarchy = 'pubdate'
-	list_display = ('title', 'active', 'pubdate')
+	list_display = ('title', 'creator', 'active', 'pubdate')
 	list_filter = ['active','feeds']
 	exclude = ['creator','enclosure_len']
+        search_fields = ['title']
 
 	def get_form(self, request, obj=None, **kwargs):
 		canChange = True

@@ -85,7 +85,7 @@ class Podcast(models.Model):
 	its_author = models.CharField("艺人", max_length=100)
 	its_explicit = models.SmallIntegerField(choices=PODCAST_EXPLICIT,default=PODCAST_EXPLICIT_CLEAN)
 	feeds = models.ManyToManyField(Feed)
-	creator = models.ForeignKey(User)
+	creator = models.ForeignKey(User, verbose_name=u"发布人")
 	active = models.BooleanField("上线",default=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
