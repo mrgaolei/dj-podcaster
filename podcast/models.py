@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_slug
@@ -8,26 +7,26 @@ from datetime import datetime
 # Create your models here.
 
 class Category(models.Model):
-	text = models.CharField("类目", max_length=255)
-	subText = models.CharField("子类目", max_length=255, blank=True)
+	text = models.CharField(u"类目", max_length=255)
+	subText = models.CharField(u"子类目", max_length=255, blank=True)
 
 class Feed(models.Model):
-	filename = models.CharField("文件名", max_length=50, unique=True, help_text="%s*.xml"%settings.FEED_URL, validators=[validate_slug])
-	domain = models.URLField("自定义域名", help_text="自定义域名会覆盖系统默认域名", blank=True)
-	display_num = models.SmallIntegerField("节目展示数", default = 100)
-	admins = models.ManyToManyField(User, verbose_name="可发布人", help_text="管理员拥有全部Feed发布权")
+	filename = models.CharField(u"文件名", max_length=50, unique=True, help_text="%s*.xml"%settings.FEED_URL, validators=[validate_slug])
+	domain = models.URLField(u"自定义域名", help_text=u"自定义域名会覆盖系统默认域名", blank=True)
+	display_num = models.SmallIntegerField(u"节目展示数", default = 100)
+	admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=u"可发布人", help_text=u"管理员拥有全部Feed发布权")
 	title = models.CharField(max_length=100)
 	description = models.CharField(max_length=255)
 	its_summary = models.CharField(max_length=255)
 	its_author = models.CharField(max_length=255)
-	its_image = models.ImageField("播客封面", upload_to="feed")
+	its_image = models.ImageField(u"播客封面", upload_to="feed")
 	its_owner_name = models.CharField(max_length=255)
 	its_owner_email = models.EmailField()
 	its_subtitle = models.CharField(max_length=255)
 	its_keywords = models.CharField(max_length=255)
 	its_category = models.CharField(max_length=255)
 	its_subcategory = models.CharField(max_length=255, blank=True)
-	its_categories = models.TextField("播客分类xml",default='')
+	its_categories = models.TextField(u"播客分类xml",default='')
 	copyright = models.CharField(max_length=255)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
@@ -48,7 +47,7 @@ class Feed(models.Model):
 		return self.title
 
 	class Meta:
-		verbose_name = '播客'
+		verbose_name = u'播客'
 		verbose_name_plural = verbose_name
 
 class Podcast(models.Model):
@@ -73,23 +72,23 @@ class Podcast(models.Model):
 		(PODCAST_EXPLICIT_NO, 'no'),
 	)
 
-	title = models.CharField("标题", max_length=255)
+	title = models.CharField(u"标题", max_length=255)
 	description = models.CharField(max_length=255, blank=True)
-	duration = models.IntegerField("时长", help_text="单位：秒")
-	enclosure_url = models.URLField("节目URL")
-	enclosure_len = models.IntegerField("文件大小",help_text="单位：字节")
+	duration = models.IntegerField(u"时长", help_text=u"单位：秒")
+	enclosure_url = models.URLField(u"节目URL")
+	enclosure_len = models.IntegerField(u"文件大小",help_text=u"单位：字节")
 	enclosure_type = models.SmallIntegerField(choices=PODCAST_ENCLOSURE_TYPE,default=PODCAST_ENCLOSURE_TYPE_M4A)
-	its_image = models.ImageField("节目封面", upload_to="podcast")
-	its_subtitle = models.TextField("子标题")
-	its_summary = models.TextField("描述")
-	its_author = models.CharField("艺人", max_length=100)
+	its_image = models.ImageField(u"节目封面", upload_to="podcast")
+	its_subtitle = models.TextField(u"子标题")
+	its_summary = models.TextField(u"描述")
+	its_author = models.CharField(u"艺人", max_length=100)
 	its_explicit = models.SmallIntegerField(choices=PODCAST_EXPLICIT,default=PODCAST_EXPLICIT_CLEAN)
 	feeds = models.ManyToManyField(Feed)
-	creator = models.ForeignKey(User, verbose_name=u"发布人")
-	active = models.BooleanField("上线",default=True)
+	creator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=u"发布人")
+	active = models.BooleanField(u"上线",default=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
-	pubdate = models.DateTimeField("发布时间",default=datetime.now())
+	pubdate = models.DateTimeField(u"发布时间",default=datetime.now())
 
 	def enclosure_type_str(self):
 		for r in self.PODCAST_ENCLOSURE_TYPE:
@@ -105,7 +104,7 @@ class Podcast(models.Model):
 		return self.title
 
 	class Meta:
-		verbose_name = '节目'
+		verbose_name = u'节目'
 		verbose_name_plural = verbose_name
 		ordering = ['-pubdate']
 """
