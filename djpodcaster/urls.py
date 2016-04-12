@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'djpodcaster.views.home', name='home'),
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'^$', 'podcast.views.home'),
     url(r'^podcast/', include('podcast.urls')),
 

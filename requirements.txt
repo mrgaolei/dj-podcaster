@@ -4,3 +4,4 @@ pillow==2.9.0
 httplib2==0.9.1
 pytz==2015.4
 gunicorn==19.3.0
+django-tinymce==2.3.0

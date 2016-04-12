@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_slug
+from tinymce.models import HTMLField
 from datetime import datetime
 # Create your models here.
 
@@ -83,7 +84,7 @@ class Podcast(models.Model):
 	enclosure_type = models.SmallIntegerField(choices=PODCAST_ENCLOSURE_TYPE, default=PODCAST_ENCLOSURE_TYPE_M4A)
 	its_image = models.ImageField(u"节目封面", upload_to="podcast")
 	its_subtitle = models.TextField(u"子标题")
-	its_summary = models.TextField(u"描述")
+	its_summary = HTMLField(u"描述")
 	its_author = models.CharField(u"艺人", max_length=100)
 	its_explicit = models.SmallIntegerField(choices=PODCAST_EXPLICIT, default=PODCAST_EXPLICIT_CLEAN)
 	feeds = models.ManyToManyField(Feed)

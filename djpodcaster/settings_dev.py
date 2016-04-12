@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'tinymce',
     'podcast',
 )
 
@@ -160,6 +161,10 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "simple",
 }
 
 #DATABASE_ROUTERS = ['podcast.TsRouter']
