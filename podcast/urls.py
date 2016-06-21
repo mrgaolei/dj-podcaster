@@ -1,6 +1,6 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+from podcast import views
 
-urlpatterns = patterns('',
-    # Examples:
-    url(r'^feed/(?P<filename>.*)\.xml$', 'podcast.views.showfeed'),
-)
+urlpatterns = [
+    url(r'^feed/(?P<filename>.*)\.xml$', views.showfeed),
+]
