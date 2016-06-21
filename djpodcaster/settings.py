@@ -163,7 +163,11 @@ LOGGING = {
 }
 
 TINYMCE_DEFAULT_CONFIG = {
-    'theme': "simple",
+    'theme': "advanced",
+    'theme_advanced_buttons1': "listbox,bold,italic,underline,separator,link,unlink,separator,bullist,numlist",
+    'width': 620,
+    'height': 300,
+    # 'skin': "o2k7",
 }
 
 #DATABASE_ROUTERS = ['podcast.TsRouter']
