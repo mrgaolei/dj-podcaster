@@ -9,6 +9,32 @@ from datetime import datetime
 
 # Create your models here.
 
+class CloudStorage(models.Model):
+    CLOUDSTORAGE_TYPE_QINIU = 1
+    CLOUDSTORAGE_TYPE_ALIYUNOSS = 2
+    CLOUDSTORAGE_TYPE = (
+        (CLOUDSTORAGE_TYPE_QINIU, u"七牛"),
+        (CLOUDSTORAGE_TYPE_ALIYUNOSS, u"阿里云OSS"),
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)
+    type = models.SmallIntegerField(u"类型", choices=CLOUDSTORAGE_TYPE, default=CLOUDSTORAGE_TYPE_QINIU)
+    name = models.CharField(u"存储命名", max_length=100)
+    domain = models.URLField(u"站点域名", help_text=u"需要包含http或者https部分")
+    bucket = models.CharField(u"Bucket", max_length=255)
+    access_key = models.CharField(u"Access Key", max_length=255)
+    secret_key = models.CharField(u"Secret Key", max_length=255)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u"云存储"
+        verbose_name_plural = verbose_name
+        unique_together = (("owner", "name"),)
+
+
 class Category(models.Model):
     text = models.CharField(u"类目", max_length=255)
     subText = models.CharField(u"子类目", max_length=255, blank=True)

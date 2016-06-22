@@ -7,3 +7,4 @@ gunicorn==19.6.0
 django-tinymce==2.3.0
 python-decouple==3.0
 dj-database-url==0.3.0
+qiniu==7.0.7
