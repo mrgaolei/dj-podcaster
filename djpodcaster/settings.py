@@ -1,8 +1,11 @@
 import os.path
+from decouple import config
+from dj_database_url import parse as db_url
 # Django settings for djpodcaster project.
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+DEBUG = config('DJP_DEBUG', default=False, cast=bool)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -11,13 +14,9 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'djpodcaster',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'djpodcaster',
-        'PASSWORD': 'djpodcaster',
-    },
+    'default': config(
+        'DJP_DATABASE_URL',
+        cast=db_url),
     'ts': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tangsuanradio',
@@ -38,7 +37,13 @@ TIME_ZONE = 'Asia/Shanghai'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = config('DJP_LANGUAGE_CODE', default='en-us')
+
+EMAIL_HOST = config('DJP_EMAIL_HOST', default='localhost')
+EMAIL_PORT = config('DJP_EMAIL_PORT', default=25)
+EMAIL_HOST_USER = config('DJP_EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('DJP_EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = config('DJP_EMAIL_USE_TLS', default=True, cast=bool)
 
 SITE_ID = 1
 
@@ -70,7 +75,7 @@ STATIC_ROOT = os.path.join(os.path.dirname(__file__), '../static').replace('\\',
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = config('DJP_STATIC_URL', default='/static/')
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -79,23 +84,8 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
-
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '_e!^tfz7^97=azxk)4tw^1hp)p4h_2748q#9kost7+w97f9ll7'
-
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
+SECRET_KEY = config('DJP_SECRET_KEY')
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -109,15 +99,24 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'djpodcaster.urls'
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR+'/'+config('djp_TEMPLATE_DIR', default='templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'djpodcaster.wsgi.application'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), '../templates').replace('\\','/'),
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -164,7 +163,11 @@ LOGGING = {
 }
 
 TINYMCE_DEFAULT_CONFIG = {
-    'theme': "simple",
+    'theme': "advanced",
+    'theme_advanced_buttons1': "listbox,bold,italic,underline,separator,link,unlink,separator,bullist,numlist",
+    'width': 620,
+    'height': 300,
+    # 'skin': "o2k7",
 }
 
 #DATABASE_ROUTERS = ['podcast.TsRouter']

@@ -1,0 +1,58 @@
+{% extends 'admin/base_site.html' %}
+
+{% block title %}拖拽上传 | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block content %}
+    <script src="//libs.cdnjs.net/jquery/3.0.0/jquery.min.js"></script>
+    <script src="//libs.cdnjs.net/dropzone/4.3.0/min/dropzone.min.js"></script>
+    <script>
+    var opener_ele = window.location.hash.replace("#", "");
+    $('window').ready(function(){
+        Dropzone.options.dz = {
+            maxFilesize: 1,
+        };
+        $("div#dz").dropzone({
+            init: function() {
+                this.on("success", function(file, response){
+                    $("[name=enclosure_url]", window.opener.document).attr("value", response.url);
+                    window.close();
+                });
+            },
+            url: ".",
+            maxFilesize: 200,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+            }
+        });
+    });
+    </script>
+    <style>
+    #dz {
+        width: 320px;
+        height: 240px;
+        border: 2px dashed darkblue;
+        border-radius: 10px;
+    }
+    .dz-image,
+    .dz-details {
+        display:none;
+    }
+    .dz-progress {
+        height: 1em;
+        border: 1px solid brown;
+    }
+    .dz-upload {
+        background: brown;
+        display: block;
+        height: 100%;
+    }
+    </style>
+    <h1>拖拽上传</h1>
+    <select name="cloudstorate">
+    {% for s in storages %}
+    <option value="{{ s.id }}">{{ s.name }}</option>
+    {% endfor %}
+    </select>
+    <div id="dz">
+    </div>
+{% endblock %}

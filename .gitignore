@@ -1,9 +1,9 @@
 *.log
 *.pot
 *.pyc
+.env
 local_settings.py
 feeds
 media
 settings_prd.py
-settings.py
 venv/
