@@ -1,7 +1,7 @@
 dj-podcaster
 ============
 
-A feed manager for Apple Podcast Service. Object is replaced WordPress + PodPress.
+# A feed manager for Apple Podcast Service. Objective is replace WordPress + PodPress.
 
 
 * Multi user support;
@@ -9,3 +9,4 @@ A feed manager for Apple Podcast Service. Object is replaced WordPress + PodPres
 * Category & feed cross display support;
 * Static feed url;
 * Hi performance;
+* Qiniu Cloud Storage support added;
