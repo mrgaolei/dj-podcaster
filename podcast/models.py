@@ -16,7 +16,7 @@ class CloudStorage(models.Model):
         (CLOUDSTORAGE_TYPE_QINIU, u"七牛"),
         (CLOUDSTORAGE_TYPE_ALIYUNOSS, u"阿里云OSS"),
     )
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False, on_delete=models.PROTECT)
     type = models.SmallIntegerField(u"类型", choices=CLOUDSTORAGE_TYPE, default=CLOUDSTORAGE_TYPE_QINIU)
     name = models.CharField(u"存储命名", max_length=100)
     domain = models.URLField(u"站点域名", help_text=u"需要包含http或者https部分")
@@ -77,6 +77,9 @@ class Feed(models.Model):
     def __unicode__(self):
         return self.title
 
+    def __str__(self):
+        return self.__unicode__()
+
     class Meta:
         verbose_name = u'播客'
         verbose_name_plural = verbose_name
@@ -116,7 +119,7 @@ class Podcast(models.Model):
     its_author = models.CharField(u"艺人", max_length=100)
     its_explicit = models.SmallIntegerField(choices=PODCAST_EXPLICIT, default=PODCAST_EXPLICIT_CLEAN)
     feeds = models.ManyToManyField(Feed)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=u"发布人")
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name=u"发布人")
     active = models.BooleanField(u"上线", default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -134,6 +137,9 @@ class Podcast(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def __str__(self):
+        return self.__unicode__()
 
     class Meta:
         verbose_name = u'节目'

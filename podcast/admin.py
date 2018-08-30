@@ -4,7 +4,8 @@ from django.contrib import admin
 from django.contrib.admin import register
 from django.forms.widgets import CheckboxSelectMultiple, URLInput
 from django.shortcuts import render
-from models import *
+from django.db import models
+from .models import CloudStorage, Feed, Podcast
 
 
 @register(CloudStorage)
@@ -47,8 +48,8 @@ class FeedAdmin(admin.ModelAdmin):
 
 class DJURLInput(URLInput):
 
-    def render(self, name, value, attrs=None):
-        html = super(DJURLInput, self).render(name, value, attrs)
+    def render(self, name, value, attrs=None, renderer=None):
+        html = super(DJURLInput, self).render(name, value, attrs, renderer)
         html += u' <button type="button" onclick="window.open(\'/admin/podcast/podcast/upload/#%s\')">直接上传(beta)</button>' % name
         return html
 
@@ -79,7 +80,7 @@ class PodcastAdmin(admin.ModelAdmin):
         if not request.user.is_superuser:
             form.base_fields["feeds"].queryset = Feed.objects.filter(admins=request.user)
 
-        print form.base_fields["feeds"]
+        print(form.base_fields["feeds"])
         return form
 
     def queryset(self, request):
@@ -115,7 +116,6 @@ class PodcastAdmin(admin.ModelAdmin):
         from qiniu import Auth, put_file, etag, put_data
         if request.method == 'POST':
             uploaded = request.FILES['file']
-            print dir(uploaded)
             filename_group = uploaded.name.split('.')
             file_ext = ''
             if len(filename_group) >= 2:
@@ -130,14 +130,13 @@ class PodcastAdmin(admin.ModelAdmin):
             bucket_name = storage.bucket
             key = '%s%s' % (hash, file_ext)
             token = q.upload_token(bucket_name, key)
-            print type(uploaded)
+            print(type(uploaded))
             if isinstance(uploaded, InMemoryUploadedFile):
                 ret, info = put_data(token, key, file_data)
             else:
                 ret, info = put_file(token, key, uploaded.temporary_file_path())
 
             if info.status_code == 200:
-                print info
                 assert ret['key'] == key
                 # assert ret['hash'] == etag(uploaded.temporary_file_path())
                 return JsonResponse({
@@ -148,7 +147,7 @@ class PodcastAdmin(admin.ModelAdmin):
                     # 'path': '%s/%s' % (bucket_name, key),
                 })
             else:
-                print ret, info
+                print(ret, info)
                 return JsonResponse({
                     'error': 'error',
                 }, status=info.status_code)
