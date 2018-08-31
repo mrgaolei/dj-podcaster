@@ -65,7 +65,7 @@ class PodcastAdmin(admin.ModelAdmin):
         models.URLField: {'widget': DJURLInput},
     }
 
-    def get_form(self, request, obj=None, **kwargs):
+    def get_readonly_fields(self, request, obj=None):
         canChange = True
         if obj:
             canChange = False
@@ -73,8 +73,12 @@ class PodcastAdmin(admin.ModelAdmin):
                 for admin in feed.admins.all():
                     if admin == request.user:
                         canChange = True
-        if not canChange:
-            raise Exception("Permission Denied!")
+        if canChange:
+            return self.readonly_fields
+        else:
+            return [f.name for f in self.model._meta.fields]
+
+    def get_form(self, request, obj=None, **kwargs):
         form = super(PodcastAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields["feeds"].widget = CheckboxSelectMultiple()
         if not request.user.is_superuser:
@@ -83,12 +87,11 @@ class PodcastAdmin(admin.ModelAdmin):
         print(form.base_fields["feeds"])
         return form
 
-    def queryset(self, request):
-        qs = super(PodcastAdmin, self).queryset(request)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request).select_related('creator')
         if request.user.is_superuser:
             return qs
         else:
-            return qs
             return qs.filter(feeds__admins=request.user)
 
     def save_model(self, request, obj, form, change):
