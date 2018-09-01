@@ -39,7 +39,7 @@ class FeedAdmin(admin.ModelAdmin):
         for feed in queryset:
             podcasts = Podcast.objects.filter(feeds=feed)[:feed.display_num]
             rss = render_to_string("podcast/feed.html", {'feed': feed, 'podcasts': podcasts, 'now': datetime.now()})
-            f = open(feed.feed_path(), 'w')
+            f = open(feed.feed_path(), 'wb')
             f.write(rss.encode('utf-8'))
             f.close()
 

@@ -117,7 +117,8 @@ class Podcast(models.Model):
     its_subtitle = models.TextField(u"子标题")
     its_summary = HTMLField(u"描述", help_text=u"从iOS 9起,描述支持简单HTML")
     its_author = models.CharField(u"艺人", max_length=100)
-    its_explicit = models.SmallIntegerField(choices=PODCAST_EXPLICIT, default=PODCAST_EXPLICIT_CLEAN)
+    its_explicit = models.SmallIntegerField(choices=PODCAST_EXPLICIT, default=PODCAST_EXPLICIT_CLEAN,
+        help_text=u"脏标。如果为Yes，则18岁以下用户无法看到该节目")
     feeds = models.ManyToManyField(Feed)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name=u"发布人")
     active = models.BooleanField(u"上线", default=True)
