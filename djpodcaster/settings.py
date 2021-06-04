@@ -17,17 +17,17 @@ DATABASES = {
     'default': config(
         'DJP_DATABASE_URL',
         cast=db_url),
-    'ts': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tangsuanradio',
-        'USER': '',
-        'PASSWORD': '',
-    }
+    # 'ts': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'tangsuanradio',
+    #     'USER': '',
+    #     'PASSWORD': '',
+    # }
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -71,7 +71,7 @@ MEDIA_URL = 'http://media.ts.com/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(os.path.dirname(__file__), '../static').replace('\\','/')
+STATIC_ROOT = BASE_DIR + '/static'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -102,7 +102,7 @@ ROOT_URLCONF = 'djpodcaster.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR+'/'+config('djp_TEMPLATE_DIR', default='templates')],
+        'DIRS': [BASE_DIR+'/'+config('DJP_TEMPLATE_DIR', default='templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -172,5 +172,5 @@ TINYMCE_DEFAULT_CONFIG = {
 
 #DATABASE_ROUTERS = ['podcast.TsRouter']
 
-FEED_PATH = os.path.join(os.path.dirname(__file__), '../feeds/').replace('\\','/')
+FEED_PATH = os.path.join(os.path.dirname(__file__), '../../feeds/').replace('\\','/')
 FEED_URL = 'http://feed.tangsuanradio.com/'

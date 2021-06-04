@@ -1,8 +1,16 @@
 # djpodcaster
-# A django based project that help podcasters to publish theirs content to Apple's Podcast Service.
-# USAGE:
-# docker run --name YOUR_FAV_NAME -d --link=YOUR_MYSQL_DB:mysqldb djpodcaster
+FROM thinkwhere/gdal-python
 
-FROM django:python2-onbuild
+MAINTAINER gaolei gaolei@liheran.com
 
-MAINTAINER mrgaolei, mrgaolei@qq.com
+WORKDIR /data/src
+
+COPY ./requirements.txt /data/src/requirements.txt
+
+RUN pip3 install -r requirements.txt
+
+COPY . /data/src
+
+COPY docker-entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

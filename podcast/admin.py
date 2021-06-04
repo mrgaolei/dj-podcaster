@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+import requests
+
 from django.conf.urls import url
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import register
 from django.forms.widgets import CheckboxSelectMultiple, URLInput
 from django.shortcuts import render
@@ -25,6 +27,7 @@ class FeedAdmin(admin.ModelAdmin):
     list_display = ('title', 'feed_url', 'feed_path', 'updated')
     # list_filter = ['online']
     actions = ['make_build']
+    autocomplete_fields = ['admins']
 
     def queryset(self, request):
         qs = super(FeedAdmin, self).queryset(request)
@@ -88,22 +91,24 @@ class PodcastAdmin(admin.ModelAdmin):
         return form
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request).select_related('creator')
+        qs = super().get_queryset(request)\
+            .select_related('creator')\
+            .prefetch_related('feeds')
         if request.user.is_superuser:
             return qs
         else:
             return qs.filter(feeds__admins=request.user)
 
     def save_model(self, request, obj, form, change):
-        import httplib2
-        h = httplib2.Http()
-        resp, content = h.request(obj.enclosure_url, "HEAD")
-        if resp['status'] == '200':
-            obj.enclosure_len = int(resp['content-length'])
+        resp = requests.head(obj.enclosure_url)
+        if resp.status_code == 200:
+            obj.enclosure_len = int(resp.headers['Content-Length'])
         else:
             raise Exception(u"节目URL错误，请上传完节目再发布。")
-        obj.creator = request.user
+        if not change:
+            obj.creator = request.user
         obj.save()
+        self.message_user(request, "发布/更新节目后，请记得去“播客”列表重新生成feed", level=messages.WARNING)
 
     def get_urls(self):
         urls = super(PodcastAdmin, self).get_urls()
