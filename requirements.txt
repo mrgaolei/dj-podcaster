@@ -1,6 +1,6 @@
 
 Django>=3.2,<3.3
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.3
 pillow==5.2.0
 requests==2.27.1
 pytz==2016.4
