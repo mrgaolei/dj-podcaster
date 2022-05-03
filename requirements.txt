@@ -1,11 +1,11 @@
 
-Django>=2.2,<3.0
+Django>=3.2,<3.3
 psycopg2-binary==2.8.6
 pillow==5.2.0
-requests==2.25.1
+requests==2.27.1
 pytz==2016.4
-gunicorn==19.10.0
+gunicorn==20.1.0
 django-tinymce==2.7.0
-python-decouple==3.4
+python-decouple==3.6
 dj-database-url==0.5.0
 qiniu==7.0.7
